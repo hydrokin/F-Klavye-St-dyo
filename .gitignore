@@ -1,0 +1,12 @@
+# Derlenmiş uygulama (GitHub Releases üzerinden dağıtılır)
+*.exe
+
+# Node / Electron derleme çıktıları
+node_modules/
+kaynak/dist/
+package-lock.json
+
+# Sistem dosyaları
+Thumbs.db
+desktop.ini
+.DS_Store
