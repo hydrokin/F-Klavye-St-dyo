@@ -1,0 +1,38 @@
+{
+  "name": "f-klavye-studyo",
+  "productName": "F Klavye Stüdyo",
+  "version": "1.0.0",
+  "description": "Modern F klavye on parmak eğitim uygulaması",
+  "main": "main.js",
+  "author": "F Klavye Stüdyo",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "icon": "node build/make-icon.js",
+    "dist": "node build/make-icon.js && electron-builder --win portable --x64"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "com.fklavye.studyo",
+    "productName": "F Klavye Stüdyo",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "app/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "build/icon.ico"
+    },
+    "portable": {
+      "artifactName": "F Klavye Studyo.exe"
+    }
+  }
+}
