@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:">
+  <title>F Klavye Stüdyo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="titlebar"><div class="tb-title"><img src="icon.png" alt=""> F Klavye Stüdyo</div></div>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="icon.png" alt="">
+        <div><div class="brand-name">F Klavye</div><div class="brand-sub">On Parmak Stüdyosu</div></div>
+      </div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="lessons"><span class="ni">📚</span>Dersler</button>
+        <button class="nav-item" data-view="practice"><span class="ni">🎯</span>Pratik</button>
+        <button class="nav-item" data-view="speed"><span class="ni">⚡</span>Hız Testi</button>
+        <button class="nav-item" data-view="stats"><span class="ni">📊</span>İstatistikler</button>
+        <button class="nav-item" data-view="settings"><span class="ni">⚙️</span>Ayarlar</button>
+      </nav>
+      <div class="side-card">
+        <div class="sc-label">Genel ilerleme</div>
+        <div class="sc-bar"><div id="sideProgress"></div></div>
+        <div class="sc-row"><span id="sideProgressText">0 / 0 seviye</span><span id="sideStars">★ 0</span></div>
+        <div class="sc-row streak"><span>🔥 Seri</span><span id="sideStreak">0 gün</span></div>
+        <div class="sc-row"><span>🏆 En iyi hız</span><span id="sideBest">0 k/dk</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <!-- ============ DERSLER ============ -->
+      <section class="view active" id="view-lessons">
+        <header class="page-head">
+          <div>
+            <h1>F Klavye Dersleri</h1>
+            <p class="muted">20 ders, 220'den fazla seviye. Her denemede yeni alıştırma üretilir.</p>
+          </div>
+          <button class="btn primary" id="continueBtn">▶ Kaldığın yerden devam et</button>
+        </header>
+        <div id="lessonGroups"></div>
+      </section>
+
+      <!-- ============ DERS DETAYI ============ -->
+      <section class="view" id="view-lesson">
+        <button class="back" data-back="lessons">← Dersler</button>
+        <div class="lesson-hero">
+          <div class="lh-icon" id="lhIcon"></div>
+          <div class="lh-body">
+            <div class="chip" id="lhGroup"></div>
+            <h1 id="lhTitle"></h1>
+            <p id="lhIntro" class="intro"></p>
+            <div class="lh-meta">
+              <span id="lhLevels"></span><span id="lhTarget"></span><span id="lhDone"></span>
+            </div>
+          </div>
+        </div>
+        <h3 class="section-title">Seviyeler</h3>
+        <div class="levels" id="levelList"></div>
+        <div class="tip-box">💡 Önerilen çalışma: Her seviyeyi en az <b>3 yıldız</b> alana kadar, ya da <b>5 kez</b> tekrar et. Klavyeye bakma; parmağını unuttuysan ekran klavyesine göz at.</div>
+      </section>
+
+      <!-- ============ YAZMA EKRANI ============ -->
+      <section class="view" id="view-type">
+        <div class="type-top">
+          <button class="back" id="typeBack">← Geri</button>
+          <div class="type-title"><div id="tTitle"></div><div class="muted small" id="tSub"></div></div>
+          <div class="type-actions">
+            <button class="btn ghost sm" id="restartBtn" title="Yeniden başlat (Esc)">↻ Yeniden</button>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat"><div class="sv" id="sWpm">0</div><div class="sl">kelime/dk</div></div>
+          <div class="stat"><div class="sv" id="sKpm">0</div><div class="sl">vuruş/dk</div></div>
+          <div class="stat"><div class="sv" id="sAcc">100%</div><div class="sl">doğruluk</div></div>
+          <div class="stat"><div class="sv" id="sErr">0</div><div class="sl">hata</div></div>
+          <div class="stat"><div class="sv" id="sTime">0:00</div><div class="sl" id="sTimeLbl">süre</div></div>
+        </div>
+        <div class="progress"><div id="tProgress"></div></div>
+
+        <div class="text-card" id="textCard" tabindex="0">
+          <div class="text-scroll" id="textScroll"><div id="textBox"></div></div>
+          <div class="focus-hint" id="focusHint">Başlamak için yazmaya başla</div>
+          <div class="caps-warn" id="capsWarn">⚠ Caps Lock açık</div>
+        </div>
+
+        <div class="finger-hint" id="fingerHint"><span class="dot"></span><span id="fingerText">Sıradaki tuş</span></div>
+
+        <div class="kb-area">
+          <svg class="hand left" id="handL" viewBox="0 0 200 230"></svg>
+          <div class="keyboard" id="keyboard"></div>
+          <svg class="hand right" id="handR" viewBox="0 0 200 230"></svg>
+        </div>
+      </section>
+
+      <!-- ============ PRATİK ============ -->
+      <section class="view" id="view-practice">
+        <header class="page-head"><div><h1>Pratik Alanı</h1><p class="muted">Ders dışında serbest çalışma modları.</p></div></header>
+        <div class="cards">
+          <div class="card mode">
+            <div class="mode-icon">🩹</div>
+            <h3>Zayıf Tuşlarım</h3>
+            <p class="muted">En çok hata yaptığın tuşlardan otomatik alıştırma üretilir.</p>
+            <div class="weak-keys" id="weakKeys"></div>
+            <button class="btn primary" id="weakBtn">Başlat</button>
+          </div>
+          <div class="card mode">
+            <div class="mode-icon">🎹</div>
+            <h3>Tuş Seçerek Çalış</h3>
+            <p class="muted">Çalışmak istediğin harfleri seç, sana özel alıştırma hazırlansın.</p>
+            <div class="key-picker" id="keyPicker"></div>
+            <div class="row gap">
+              <label class="radio"><input type="radio" name="pickMode" value="drill" checked> Harf grupları</label>
+              <label class="radio"><input type="radio" name="pickMode" value="words"> Kelimeler</label>
+            </div>
+            <button class="btn primary" id="pickBtn">Başlat</button>
+          </div>
+          <div class="card mode">
+            <div class="mode-icon">📖</div>
+            <h3>Rastgele Metin</h3>
+            <p class="muted">Cümle, paragraf veya kelime karışımlarıyla serbest pratik.</p>
+            <div class="seg" id="randomSeg">
+              <button data-v="words" class="on">Kelimeler</button>
+              <button data-v="sentences">Cümleler</button>
+              <button data-v="paragraph">Paragraf</button>
+            </div>
+            <button class="btn primary" id="randomBtn">Başlat</button>
+          </div>
+          <div class="card mode wide">
+            <div class="mode-icon">✍️</div>
+            <h3>Kendi Metnin</h3>
+            <p class="muted">İstediğin metni yapıştır ve onunla çalış (en fazla 2000 karakter).</p>
+            <textarea id="customText" maxlength="2000" placeholder="Metni buraya yapıştır..."></textarea>
+            <button class="btn primary" id="customBtn">Başlat</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ HIZ TESTİ ============ -->
+      <section class="view" id="view-speed">
+        <header class="page-head"><div><h1>Hız Testi</h1><p class="muted">Belirli bir sürede ne kadar hızlı ve doğru yazabildiğini ölç.</p></div></header>
+        <div class="speed-hero card">
+          <div class="speed-gauge">
+            <svg viewBox="0 0 200 120"><path d="M20 110 A80 80 0 0 1 180 110" class="g-bg"/><path d="M20 110 A80 80 0 0 1 180 110" class="g-fg" id="gaugeArc"/></svg>
+            <div class="gauge-val"><span id="gaugeVal">0</span><small>en iyi k/dk</small></div>
+          </div>
+          <div class="speed-opts">
+            <h3>Süre seç</h3>
+            <div class="seg big" id="durSeg">
+              <button data-v="30">30 sn</button><button data-v="60" class="on">1 dk</button>
+              <button data-v="120">2 dk</button><button data-v="180">3 dk</button><button data-v="300">5 dk</button>
+            </div>
+            <h3>İçerik</h3>
+            <div class="seg big" id="speedContent">
+              <button data-v="common" class="on">Sık kelimeler</button>
+              <button data-v="all">Tüm kelimeler</button>
+              <button data-v="text">Cümleler</button>
+            </div>
+            <button class="btn primary lg" id="speedBtn">⚡ Testi Başlat</button>
+          </div>
+        </div>
+        <h3 class="section-title">Son testler</h3>
+        <div class="table-wrap"><table class="table" id="speedTable"><thead><tr><th>Tarih</th><th>Süre</th><th>Kelime/dk</th><th>Vuruş/dk</th><th>Doğruluk</th></tr></thead><tbody></tbody></table></div>
+      </section>
+
+      <!-- ============ İSTATİSTİKLER ============ -->
+      <section class="view" id="view-stats">
+        <header class="page-head"><div><h1>İstatistikler</h1><p class="muted">Gelişimini takip et.</p></div></header>
+        <div class="kpis" id="kpis"></div>
+        <div class="grid2">
+          <div class="card"><h3>Hız gelişimi (son 40 çalışma)</h3><div class="chart" id="wpmChart"></div></div>
+          <div class="card"><h3>Son 14 gün (dakika)</h3><div class="chart" id="dayChart"></div></div>
+        </div>
+        <div class="card"><h3>Tuş hata haritası</h3><p class="muted small">Kırmızı tuşlar daha çok hata yaptığın tuşlardır. Üzerine gelerek ayrıntıyı gör.</p><div class="keyboard heat" id="heatKeyboard"></div></div>
+      </section>
+
+      <!-- ============ AYARLAR ============ -->
+      <section class="view" id="view-settings">
+        <header class="page-head"><div><h1>Ayarlar</h1><p class="muted">Uygulamayı kendine göre düzenle.</p></div></header>
+        <div class="settings">
+          <div class="set-row">
+            <div><div class="st">Tema</div><div class="sd">Koyu veya açık görünüm.</div></div>
+            <div class="seg" id="themeSeg"><button data-v="dark">🌙 Koyu</button><button data-v="light">☀️ Açık</button></div>
+          </div>
+          <div class="set-row">
+            <div><div class="st">Giriş modu</div><div class="sd"><b>F emülasyonu</b>: Bilgisayarında Q klavye kurulu olsa bile tuşların fiziksel konumu F klavye olarak yorumlanır (önerilir). <b>Sistem düzeni</b>: Windows'ta seçili klavye düzeninin ürettiği karakter kullanılır.</div></div>
+            <div class="seg" id="inputSeg"><button data-v="emulate">F emülasyonu</button><button data-v="system">Sistem düzeni</button></div>
+          </div>
+          <div class="set-row">
+            <div><div class="st">Ekran klavyesi</div><div class="sd">Yazma ekranında renkli parmak bölgeli klavyeyi göster.</div></div>
+            <label class="switch"><input type="checkbox" id="optKeyboard"><span></span></label>
+          </div>
+          <div class="set-row">
+            <div><div class="st">El şeması</div><div class="sd">Hangi parmağı kullanacağını el çizimi üzerinde göster.</div></div>
+            <label class="switch"><input type="checkbox" id="optHands"><span></span></label>
+          </div>
+          <div class="set-row">
+            <div><div class="st">Sıradaki tuşu vurgula</div><div class="sd">Ekran klavyesinde basılacak tuşu işaretle. Kapatırsan ezberden yazarsın.</div></div>
+            <label class="switch"><input type="checkbox" id="optHighlight"><span></span></label>
+          </div>
+          <div class="set-row">
+            <div><div class="st">Hata sesi</div><div class="sd">Yanlış tuşa basınca kısa bir uyarı sesi çal.</div></div>
+            <label class="switch"><input type="checkbox" id="optErrSound"><span></span></label>
+          </div>
+          <div class="set-row">
+            <div><div class="st">Tuş sesi</div><div class="sd">Her doğru vuruşta hafif tık sesi.</div></div>
+            <label class="switch"><input type="checkbox" id="optKeySound"><span></span></label>
+          </div>
+          <div class="set-row">
+            <div><div class="st">Yazı boyutu</div><div class="sd">Alıştırma metninin büyüklüğü.</div></div>
+            <div class="seg" id="fontSeg"><button data-v="s">Küçük</button><button data-v="m">Orta</button><button data-v="l">Büyük</button></div>
+          </div>
+          <div class="set-row">
+            <div><div class="st">Hedef hız çarpanı</div><div class="sd">3 yıldız için gereken hızı ayarla.</div></div>
+            <div class="seg" id="targetSeg"><button data-v="0.75">Kolay</button><button data-v="1">Normal</button><button data-v="1.3">Zor</button></div>
+          </div>
+          <div class="set-row">
+            <div><div class="st">Günlük hedef</div><div class="sd">Her gün çalışmak istediğin süre.</div></div>
+            <div class="seg" id="goalSeg"><button data-v="5">5 dk</button><button data-v="10">10 dk</button><button data-v="20">20 dk</button><button data-v="30">30 dk</button></div>
+          </div>
+          <div class="set-row danger">
+            <div><div class="st">İlerlemeyi sıfırla</div><div class="sd">Tüm ders ilerlemesi, istatistikler ve hız testleri silinir.</div></div>
+            <button class="btn danger" id="resetBtn">Sıfırla</button>
+          </div>
+        </div>
+        <p class="muted small about">F Klavye Stüdyo 1.0 · Kısayollar: <kbd>Esc</kbd> yeniden başlat · <kbd>F11</kbd> tam ekran · Sonuç ekranında <kbd>Enter</kbd> sonraki seviye</p>
+      </section>
+    </main>
+  </div>
+
+  <!-- ============ SONUÇ PENCERESİ ============ -->
+  <div class="modal" id="resultModal">
+    <div class="modal-card">
+      <canvas id="confetti"></canvas>
+      <div class="r-stars" id="rStars"></div>
+      <h2 id="rTitle">Tebrikler!</h2>
+      <p class="muted" id="rMsg"></p>
+      <div class="r-grid">
+        <div><div class="rv" id="rWpm">0</div><div class="rl">kelime/dk</div></div>
+        <div><div class="rv" id="rKpm">0</div><div class="rl">vuruş/dk</div></div>
+        <div><div class="rv" id="rAcc">0%</div><div class="rl">doğruluk</div></div>
+        <div><div class="rv" id="rTime">0:00</div><div class="rl">süre</div></div>
+      </div>
+      <div class="r-weak" id="rWeak"></div>
+      <div class="r-actions">
+        <button class="btn ghost" id="rList">☰ Ders listesi</button>
+        <button class="btn ghost" id="rRetry">↻ Tekrar</button>
+        <button class="btn primary" id="rNext">Sonraki seviye →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="confirmModal">
+    <div class="modal-card small">
+      <h2 id="cTitle">Emin misin?</h2>
+      <p class="muted" id="cMsg"></p>
+      <div class="r-actions"><button class="btn ghost" id="cNo">Vazgeç</button><button class="btn danger" id="cYes">Evet</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
